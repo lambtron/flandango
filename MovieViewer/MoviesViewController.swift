@@ -8,6 +8,7 @@
 
 import UIKit
 import AFNetworking
+import MBProgressHUD
 
 class MoviesViewController: UITableViewController {
     
@@ -53,7 +54,8 @@ class MoviesViewController: UITableViewController {
     }
     
     func networkRequest() {
-        // Do any additional setup after loading the view.
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = URL(string: "https://api.themoviedb.org/3/movie/\(endpoint!)?api_key=\(apiKey)")
         let request = URLRequest(url: url!)
@@ -64,6 +66,7 @@ class MoviesViewController: UITableViewController {
                 if let responseDictionary = try!JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
                     self.movies = responseDictionary["results"] as? [NSDictionary]
                     self.tableView.reloadData()
+                    MBProgressHUD.hide(for: self.view, animated: true)
                 }
             }
         })
