@@ -12,9 +12,9 @@
 		4F3B505E1DB53AEF004EF6BB /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3B505D1DB53AEF004EF6BB /* MovieCell.swift */; };
 		4FB6D5061DAF486000443C3D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB6D5051DAF486000443C3D /* AppDelegate.swift */; };
 		4FB6D50B1DAF486000443C3D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FB6D5091DAF486000443C3D /* Main.storyboard */; };
-		4FB6D50D1DAF486000443C3D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB6D50C1DAF486000443C3D /* Assets.xcassets */; };
 		4FB6D5101DAF486000443C3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FB6D50E1DAF486000443C3D /* LaunchScreen.storyboard */; };
 		4FCF9DA61DB547F800285B3F /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCF9DA51DB547F800285B3F /* DetailViewController.swift */; };
+		4FCF9DA81DB559C700285B3F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FCF9DA71DB559C700285B3F /* Assets.xcassets */; };
 		94678BA84A74D638ED764B7A /* Pods_MovieViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21288D04DFEA1CCBBFE7C2E9 /* Pods_MovieViewer.framework */; };
 /* End PBXBuildFile section */
 
@@ -26,10 +26,10 @@
 		4FB6D5021DAF486000443C3D /* MovieViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FB6D5051DAF486000443C3D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4FB6D50A1DAF486000443C3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		4FB6D50C1DAF486000443C3D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4FB6D50F1DAF486000443C3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4FB6D5111DAF486000443C3D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4FCF9DA51DB547F800285B3F /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		4FCF9DA71DB559C700285B3F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B6CC1E63F281B53FCA77EE09 /* Pods-MovieViewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieViewer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MovieViewer/Pods-MovieViewer.debug.xcconfig"; sourceTree = "<group>"; };
 		E7B3E07E6CD94D2EC7D8D39E /* Pods-MovieViewer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieViewer.release.xcconfig"; path = "Pods/Target Support Files/Pods-MovieViewer/Pods-MovieViewer.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -97,8 +97,8 @@
 				4F3B505C1DB53ACF004EF6BB /* Views */,
 				4FB6D5051DAF486000443C3D /* AppDelegate.swift */,
 				4FB6D5091DAF486000443C3D /* Main.storyboard */,
-				4FB6D50C1DAF486000443C3D /* Assets.xcassets */,
 				4FB6D50E1DAF486000443C3D /* LaunchScreen.storyboard */,
+				4FCF9DA71DB559C700285B3F /* Assets.xcassets */,
 				4FB6D5111DAF486000443C3D /* Info.plist */,
 			);
 			path = MovieViewer;
@@ -177,7 +177,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FB6D5101DAF486000443C3D /* LaunchScreen.storyboard in Resources */,
-				4FB6D50D1DAF486000443C3D /* Assets.xcassets in Resources */,
+				4FCF9DA81DB559C700285B3F /* Assets.xcassets in Resources */,
 				4FB6D50B1DAF486000443C3D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
