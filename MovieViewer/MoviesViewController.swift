@@ -17,15 +17,18 @@ class MoviesViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(MoviesViewController.refreshControlAction), for: UIControlEvents.valueChanged)
+        tableView.insertSubview(refreshControl, at: 0)
+        
         networkRequest()
     }
     
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let movies = movies {
@@ -54,21 +57,40 @@ class MoviesViewController: UITableViewController {
     }
     
     func networkRequest() {
-        MBProgressHUD.showAdded(to: self.view, animated: true)
-        
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = URL(string: "https://api.themoviedb.org/3/movie/\(endpoint!)?api_key=\(apiKey)")
         let request = URLRequest(url: url!)
         let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: OperationQueue.main)
         
+        MBProgressHUD.showAdded(to: self.view, animated: true)
         let task: URLSessionTask = session.dataTask(with: request, completionHandler: {(dataOrNil, response, error) in
             if let data = dataOrNil {
                 if let responseDictionary = try!JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
                     self.movies = responseDictionary["results"] as? [NSDictionary]
                     self.tableView.reloadData()
-                    MBProgressHUD.hide(for: self.view, animated: true)
                 }
             }
+            MBProgressHUD.hide(for: self.view, animated: true)
+        })
+        task.resume()
+    }
+    
+    func refreshControlAction(refreshControl: UIRefreshControl) {
+        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
+        let url = URL(string: "https://api.themoviedb.org/3/movie/\(endpoint!)?api_key=\(apiKey)")
+        let request = URLRequest(url: url!)
+        let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: OperationQueue.main)
+        
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        let task: URLSessionTask = session.dataTask(with: request, completionHandler: {(dataOrNil, response, error) in
+            if let data = dataOrNil {
+                if let responseDictionary = try!JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
+                    self.movies = responseDictionary["results"] as? [NSDictionary]
+                    self.tableView.reloadData()
+                }
+            }
+            MBProgressHUD.hide(for: self.view, animated: true)
+            refreshControl.endRefreshing()
         })
         task.resume()
     }
