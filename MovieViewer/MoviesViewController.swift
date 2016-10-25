@@ -10,16 +10,36 @@ import UIKit
 import AFNetworking
 import MBProgressHUD
 
-class MoviesViewController: UITableViewController {
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     var movies: [NSDictionary]?
     var endpoint: String!
+    let refreshControl = UIRefreshControl()
+    
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var networkErrorView: UIView!
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if Reachability.isConnectedToNetwork() {
+            if networkErrorView.isHidden == false {
+                networkRequest()
+            }
+            // Network connection available
+            networkErrorView.isHidden = true
+        } else {
+            // Network connectino unavailable
+            networkErrorView.isHidden = false
+            MBProgressHUD.hide(for: self.view, animated: true)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(MoviesViewController.refreshControlAction), for: UIControlEvents.valueChanged)
+        tableView.dataSource = self
+        tableView.delegate = self
+        
+        refreshControl.addTarget(self, action: #selector(MoviesViewController.networkRequest), for: UIControlEvents.valueChanged)
         tableView.insertSubview(refreshControl, at: 0)
         
         networkRequest()
@@ -30,7 +50,7 @@ class MoviesViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let movies = movies {
             return movies.count
         } else {
@@ -38,7 +58,7 @@ class MoviesViewController: UITableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as! MovieCell
         
         let movie = movies![indexPath.row]
@@ -63,38 +83,27 @@ class MoviesViewController: UITableViewController {
         let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: OperationQueue.main)
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        let task: URLSessionTask = session.dataTask(with: request, completionHandler: {(dataOrNil, response, error) in
-            if let data = dataOrNil {
-                if let responseDictionary = try!JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
-                    self.movies = responseDictionary["results"] as? [NSDictionary]
-                    self.tableView.reloadData()
-                }
-            }
-            MBProgressHUD.hide(for: self.view, animated: true)
-        })
-        task.resume()
-    }
-    
-    func refreshControlAction(refreshControl: UIRefreshControl) {
-        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = URL(string: "https://api.themoviedb.org/3/movie/\(endpoint!)?api_key=\(apiKey)")
-        let request = URLRequest(url: url!)
-        let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: OperationQueue.main)
         
-        MBProgressHUD.showAdded(to: self.view, animated: true)
-        let task: URLSessionTask = session.dataTask(with: request, completionHandler: {(dataOrNil, response, error) in
-            if let data = dataOrNil {
-                if let responseDictionary = try!JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
-                    self.movies = responseDictionary["results"] as? [NSDictionary]
-                    self.tableView.reloadData()
+        if Reachability.isConnectedToNetwork() {
+            networkErrorView.isHidden = true
+            
+            let task: URLSessionTask = session.dataTask(with: request, completionHandler: {(dataOrNil, response, error) in
+                if let data = dataOrNil {
+                    if let responseDictionary = try!JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
+                        self.movies = responseDictionary["results"] as? [NSDictionary]
+                        self.tableView.reloadData()
+                    }
                 }
-            }
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.refreshControl.endRefreshing()
+            })
+            task.resume()
+        } else {
+            // Network connection unavailable.
+            networkErrorView.isHidden = false
             MBProgressHUD.hide(for: self.view, animated: true)
-            refreshControl.endRefreshing()
-        })
-        task.resume()
+        }
     }
-    
     
     // MARK: - Navigation
 
